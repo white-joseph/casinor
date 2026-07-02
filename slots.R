@@ -1,28 +1,8 @@
-symbols <- c("cherry",
-             "lemon",
-             "bar",
-             "seven",
-             "horseshoe",
-             "crown",
-             "bell",
-             "clover")
-
-probs <- c(
-  0.35,  # cherry
-  0.20,  # lemon
-  0.14,  # bar
-  0.04,  # seven
-  0.08,  # horseshoe
-  0.05,  # crown
-  0.06,  # bell
-  0.08   # clover
-)
-
 spin_slots <- function(symbols, probs){
   sample(symbols, 3, replace = TRUE, prob = probs)
 }
 
-play_slots <- function(){
+play_slots <- function(symbols, probs){
   spin <- spin_slots(symbols, probs)
   
   n_cherry <- sum(spin == "cherry")
@@ -60,24 +40,43 @@ play_slots <- function(){
   ))
 }
 
-simulate_slots <- function(runs) {
+simulate_slots <- function(symbols, probs, runs) {
   results <- rep(NA, runs)
   spins <- matrix(NA, nrow = runs, ncol = 3)
   
   for (i in seq_len(runs)) {
-    result <- play_slots()
+    result <- play_slots(symbols, probs)
     results[i] <- result$winnings
     spins[i,] <- result$spin
   }
   
-  total_payout <- sum(results)
+  profit <- sum(results)
 
   return(list(
     runs = runs,
     spins = spins,
-    total_payout = total_payout
+    profit = profit
   ))
 }
 
-simulate_slots(100)
+play_slots_1 <- function(symbols, probs, payouts) {
+  spin <- spin_slots(symbols, probs)
+  
+  names(payouts) <- symbols
+  jackpot <- (length(unique(spin)) ==  1)
+  
+  if (jackpot) {
+    symbol <- spin[1]
+    profit <- payouts[symbol]
+  } else {
+    symbol <- NA
+    profit <- -1
+  }
+  
+  return(list(
+    jackpot = jackpot,
+    symbol = symbol,
+    profit = profit
+  ))
+}
 
