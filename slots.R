@@ -1,18 +1,34 @@
-spin_slots <- function(payouts, probs){
-  sample(names(payouts), 3, replace = TRUE, prob = probs)
+spin_slots <- function(payouts, probs, reels = 3) {
+  # Takes a named vector of slot payouts and returns a random spins
+  # 
+  # Parameters: 
+  # 
+  # payouts: a named vector where names correspond to the slot symbol and payout
+  #          is the corresponding payout for that symbol
+  #
+  # probs: the probability correspoinding to the symobl. How likely that smybol
+  #        will be chosen
+  #
+  # reels: the number of reels or windows on the slot machine. Default is 3.
+  #
+  # Returns: 
+  #
+  # random vector of the named symbols of payouts
+  
+  sample(names(payouts), reels, replace = TRUE, prob = probs)
 }
 
-play_slots <- function(payouts, probs) {
-  spin <- spin_slots(payouts, probs)
+play_slots <- function(payouts, probs, wager = 1, reels = 3) {
+  spin <- spin_slots(payouts, probs, reels)
   
   jackpot <- (length(unique(spin)) ==  1)
   
   if (jackpot) {
     symbol <- spin[1]
-    profit <- payouts[symbol]
+    profit <- payouts[[symbol]]
   } else {
     symbol <- NA
-    profit <- -1
+    profit <- -wager
   }
   
   return(list(
@@ -23,51 +39,25 @@ play_slots <- function(payouts, probs) {
   ))
 }
 
-simulate_slots <- function(payouts, probs, runs) {
-  results <- rep(NA, runs)
-  spins <- matrix(NA, nrow = runs, ncol = 3)
+simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
+  spins <- matrix(NA, nrow = runs, ncol = reels)
+  jackpots <- rep(NA, runs)
+  profits <- rep(NA, runs)
   
   for (i in seq_len(runs)) {
-    result <- play_slots(payouts, probs)
-    results[i] <- result$jackpot
-    spins[i,] <- result$spin
-  }
-  
-  profit <- sum(results["profit"])
-  
-  return(list(
-    runs = runs,
-    spins = spins,
-    profit = profit
-  ))
-}
-
-simulate_slots2 <- function(payouts, probs, runs) {
-  spins <- matrix(NA, nrow = runs, ncol = 3)
-  
-  for (i in seq_len(runs)) {
-    play <- play_slots(payouts, probs)
+    play <- play_slots(payouts, probs, wager, reels)
     spins[i,] <- play$spin
-    jackpot <- play$jackpot
-    profit <- play$profit
+    jackpots[i] <- play$jackpot
+    profits[i] <- play$profit
   }
   
-  jackpots <- sum(jackpot)
-  profits <- sum(profit)
-  print(jackpot)
-  print(profit)
+  total_jackpots <- sum(jackpots)
+  total_profit <- sum(profits)
   
   return(list(
     runs = runs,
     spins = spins,
-    jackpot = jackpots,
-    profit = profits
+    total_jackpots = total_jackpots,
+    total_profit = total_profit
   ))
 }
-
-payouts <- c("cherry" = 5, "seven" = 10, "bar" = 15)
-probs <- c(0.60, 0.20, 0.20)
-
-spin_slots(payouts, probs)
-play_slots(payouts, probs)
-simulate_slots2(payouts, probs, 5)
