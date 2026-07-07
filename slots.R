@@ -3,8 +3,8 @@
 #' Takes a named vector of slot symbols and their respective payouts, 
 #' returns a random symbol for a selected number of reels.
 #' 
-#' @param payouts Named vector of slot symbols and payouts. Name must be a character,
-#' and payout must be numeric
+#' @param payouts Named vector of slot symbols and payouts. Each element's name 
+#' must be a valid character string and its value numeric. 
 #' @param probs A numeric vector of probabilities associated with each symbol.
 #' Must sum to 1 and be equal length of payouts
 #' @param reels A numeric vector of length 1 defining how many slot  reels.
@@ -20,6 +20,16 @@
 #' @export
 
 spin_slots <- function(payouts, probs, reels = 3) {
+  
+  if (length(payouts) != length(probs)) {
+    stop("payouts has length ", length(payouts), " but probs has length ", length(probs),
+         ". These must be the same length.")
+  }
+  
+  if (!isTRUE(all.equal(sum(probs),1))) {
+    stop("vector elements do not sum to target value.")
+  }
+  
   sample(names(payouts), reels, replace = TRUE, prob = probs)
 }
 
@@ -28,8 +38,8 @@ spin_slots <- function(payouts, probs, reels = 3) {
 #' Takes a named vector of slot symbols, the payouts for each symbol, a wager, 
 #' and the number of reels. Returns a logical win, and profit if any. 
 #' 
-#' @param payouts Named vector of slot symbols and payouts. Name must be a character,
-#' and payout must be numeric
+#' @param payouts Named vector of slot symbols and payouts. Each element's name 
+#' must be a valid character string and its value numeric.
 #' @param probs A numeric vector of probabilities associated with each symbol.
 #' Must sum to 1 and be equal length of payouts
 #' @param wager Numeric of how much the user would like to wager. Profit is determined
@@ -71,8 +81,8 @@ play_slots <- function(payouts, probs, wager = 1, reels = 3) {
 #' 
 #' Takes a named vector of payouts and returns the results of n spins of a slot machine.
 #' 
-#' @param payouts Named vector of slot symbols and payouts. Name must be a character,
-#' and payout must be numeric
+#' @param payouts Named vector of slot symbols and payouts. Each element's name 
+#' must be a valid character string and its value numeric.
 #' @param probs A numeric vector of probabilities associated with each symbol.
 #' Must sum to 1 and be equal length of payouts
 #' @param runs A numberic of how many runs of the simulation.
@@ -85,8 +95,8 @@ play_slots <- function(payouts, probs, wager = 1, reels = 3) {
 #' the number of total jackpots, and the total profit.
 #' 
 #' @examples 
-#' play_slots(payouts = c(cherry = 1, seven = 5, bar = 15), probs = c(0.7, 0.2, 0.1), 100)
-#' play_slots(payouts = c(cherry = 5, seven = 10), probs = c(0.75, 0.25), runs = 10000, wager = 50)
+#' simulate_slots(payouts = c(cherry = 1, seven = 5, bar = 15), probs = c(0.7, 0.2, 0.1), 100)
+#' simulate_slots(payouts = c(cherry = 5, seven = 10), probs = c(0.75, 0.25), runs = 10000, wager = 50)
 #' 
 #' @export
 
