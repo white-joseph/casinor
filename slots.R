@@ -81,6 +81,14 @@ play_slots <- function(payouts, probs, wager = 1, reels = 3) {
 #' @param reels A numeric vector of length 1 defining how many slot  reels.
 #' Default is 3.
 #' 
+#' @return A list including the number of simulation runs, a matrix of each spin result,
+#' the number of total jackpots, and the total profit.
+#' 
+#' @examples 
+#' play_slots(payouts = c(cherry = 1, seven = 5, bar = 15), probs = c(0.7, 0.2, 0.1), 100)
+#' play_slots(payouts = c(cherry = 5, seven = 10), probs = c(0.75, 0.25), runs = 10000, wager = 50)
+#' 
+#' @export
 
 simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
   spins <- matrix(NA, nrow = runs, ncol = reels)
