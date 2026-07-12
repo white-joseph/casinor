@@ -30,6 +30,14 @@ spin_slots <- function(payouts, probs, reels = 3) {
     stop("vector elements do not sum to target value.")
   }
   
+  if (length(reels) != 1) {
+    stop("reels has length ", length(reels), " but must be length 1.")
+  }
+  
+  if (!is.numeric(reels) || reels %% 1 != 0) {
+    stop("reels must be numeric and a whole number.")
+  }
+  
   sample(names(payouts), reels, replace = TRUE, prob = probs)
 }
 
@@ -58,6 +66,15 @@ spin_slots <- function(payouts, probs, reels = 3) {
 #' @export
 
 play_slots <- function(payouts, probs, wager = 1, reels = 3) {
+  
+  if (length(wager) != 1) {
+    stop("wager is length ", length(wager), " but must be length 1.")
+  }
+  
+  if (!is.numeric(wager) || wager <= 0) {
+    stop("wager must be numeric and positive.")
+  }
+  
   spin <- spin_slots(payouts, probs, reels)
   jackpot <- (length(unique(spin)) ==  1)
   
@@ -101,6 +118,15 @@ play_slots <- function(payouts, probs, wager = 1, reels = 3) {
 #' @export
 
 simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
+  
+  if (length(runs) != 1) {
+    stop("runs is length ", length(runs), " but must be length 1.")
+  }
+  
+  if (!is.numeric(runs) || runs %% 1 != 0) {
+    stop("runs must be numeric and a whole number.")
+  }
+  
   spins <- matrix(NA, nrow = runs, ncol = reels)
   jackpots <- rep(NA, runs)
   profits <- rep(NA, runs)
@@ -122,3 +148,6 @@ simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
     total_profit = total_profit
   ))
 }
+
+payouts <- c(cherry = 2, bar = 5, seven = 10)
+probs <- c(0.70, 0.20, 0.10)
