@@ -34,9 +34,15 @@ spin_slots <- function(payouts, probs, reels = 3) {
     stop("reels has length ", length(reels), " but must be length 1.")
   }
   
-  if (!is.numeric(reels) || reels %% 1 != 0) {
-    stop("reels must be numeric and a whole number.")
+  if (!is.numeric(reels)) {
+    stop("reels must be numeric.")
   }
+  
+  if (reels <= 0 || reels %% 1 != 0) {
+    stop("reels must be a positive whole number.")
+  }
+  
+  # Need to include some stop for having duplicate names in payouts
   
   sample(names(payouts), reels, replace = TRUE, prob = probs)
 }
@@ -123,8 +129,12 @@ simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
     stop("runs is length ", length(runs), " but must be length 1.")
   }
   
-  if (!is.numeric(runs) || runs %% 1 != 0) {
-    stop("runs must be numeric and a whole number.")
+  if (!is.numeric(runs)) {
+    stop("runs must be numeric.")
+  }
+  
+  if (runs <= 0 || runs %% 1 != 0) {
+    stop("runs must be a positive whole number")
   }
   
   spins <- matrix(NA, nrow = runs, ncol = reels)
@@ -148,6 +158,3 @@ simulate_slots <- function(payouts, probs, runs, wager = 1, reels = 3) {
     total_profit = total_profit
   ))
 }
-
-payouts <- c(cherry = 2, bar = 5, seven = 10)
-probs <- c(0.70, 0.20, 0.10)
