@@ -1,8 +1,8 @@
-#' Roll two fair die
+#' Roll two fair dice
 #'
-#' Rolls two fair die and returns an atomic vector of each roll
+#' Rolls two fair dice and returns an atomic vector of each roll
 #' 
-#' @return A numeric vector of length 3 where the first 2 elements are the roll 
+#' @return A numeric named vector of length 3 where the first 2 elements are the roll 
 #' of the respective die, and element 3 is their sum.
 #'  
 #' @examples 
@@ -20,6 +20,22 @@ roll_die <- function() {
   
   return(roll)
 }
+
+#' Rolls the come out roll of a craps game
+#'
+#' Rolls two dice, computes the sum. If the sum is a 7 or 11 the outcome is natural and point is NA.
+#' If the sum is a 2 or 3 the outcome is craps and point is NA. If the sum is a 12 then the outcome is 
+#' push and the point is NA. Else, the outcome is point and the point is the sum.
+#' 
+#' @return returns a list where roll is the named vector of length 3 and the first two
+#' elements are the pips of each die and the third element is their sum.
+#' Outcome is a character string of the respective outcome. Point is the established point if not NA.
+#' 
+#' @examples
+#' come_out_roll()
+#' come_out_roll()
+#' 
+#' @export
 
 come_out_roll <- function() {
   
@@ -168,4 +184,3 @@ play_craps <- function(pass_line_wager = 10, dont_pass_wager = 0, odds_wager = 0
     profit = profit
   ))
 }
-
