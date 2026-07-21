@@ -161,7 +161,41 @@ pass_line_profit <- function(outcome, pass_line_wager) {
   return(profit)
 }
 
+#' Calculates the profit on the don't pass line bet
+#' 
+#' Evaluates the outcome of the come out roll or the point resolution and returns
+#' the profit based on the respective outcome, payout and wager.
+#' 
+#' @param outcome character string vector of length 1. It is the outcome of either
+#' the come out phase or point resolution phase of craps. 
+#' @param dont_pass_wager whole positive numeric vector of length 1 for how much
+#' to bet on the don't pass line of a craps game.
+#' 
+#' @return numeric vector of length 1 which is the profit on the don't pass line bet.
+#' 
+#' @examples
+#' dont_pass_profit("natural", 10)
+#' dont_pass_profit("craps", 1250)
+#' 
+#' @export
+
 dont_pass_profit <- function(outcome, dont_pass_wager) {
+  
+  if (!(outcome %in% c("natural", "craps", "push", "point", "seven_out", "point_made"))) {
+    stop("not a possible craps outcome.")
+  }
+  
+  if (length(dont_pass_wager) != 1) {
+    stop("length of dont pass line wager is ", length(dont_pass_wager), " but must be length 1.")
+  }
+  
+  if (!is.numeric(dont_pass_wager) || dont_pass_wager < 0) {
+    stop("dont pass line wager must be numeric and non-negative.")
+  }
+  
+  if (dont_pass_wager %% 1 != 0) {
+    stop("dont pass line wager must be a whole number.")
+  }
   
   if (outcome %in% c("craps", "seven_out")) {
     profit <- dont_pass_wager
