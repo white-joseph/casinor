@@ -62,13 +62,18 @@ come_out_roll <- function() {
   ))
 }
 
-#' Rolls a die until their sum is 7 or the point value to resolve the point
+#' Rolls two dice until their sum is 7 or the point value to resolve the point
 #' 
-#' Rolls two fair die until either their sum is 7 or the established point. Returns
-#' a matrix where each row is a specific roll. Returns a numeric vector of length 1
-#' which is the number of rolls it took to resolve the point.
+#' Rolls two fair dice until either their sum is 7 or the established point. Returns
+#' a matrix where each row is a specific roll. Returns the rolls, the outcome, and the number 
+#' of rolls it took to resolve the point. 
 #' 
-#' @param point Whole numeric vector of length 1 who's value must be between 2 and 12 but not 7
+#' @param point Whole numeric vector of length 1 whose value must be between 2 and 12 but not 7
+#' 
+#' @return Returns rolls, a matrix where each row corresponds to a roll. Returns outcome, which
+#' is seven_out if the loop ends on a sum of 7 or point_made if the loop ends with the point
+#' being rolled again. Returns n_rolls which is the number of rolls it took to resolve 
+#' the point
 #' 
 #' @examples 
 #' resolve_point(4)
