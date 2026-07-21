@@ -208,7 +208,48 @@ dont_pass_profit <- function(outcome, dont_pass_wager) {
   return(profit)
 }
 
+#' Calculates the profit of taking odds on the pass line
+#' 
+#' Evaluates the point and outcome from the point resolution phase of craps,
+#' and calculates it's respective profit. Payouts for 4 & 10: 2/1, Payouts for 
+#' 5 & 9: 3/2, Payouts for 6 & 8: 6/5. Returns profit on the odds bet.
+#' 
+#' @param point numeric vector of length 1. Is the established point from the come out roll.
+#' @param outcome character string vector of length 1. It is the outcome of either
+#' the come out phase or point resolution phase of craps. 
+#' @param odds_wager whole positive numeric vector of length 1 for how much
+#' is bet on taking odds on the pass line. Must be a numeric and length 1, and multiple of 2 or 5.
+#' 
+#' @return numeric vector of length 1 which is the profit on the pass line odds bet.
+#' 
+#' @examples
+#' odds_profit(5, "point_made", 10)
+#' odds_profit(6, "seven_out", 15)
+#' odds_profit(10, "point_made", 10)
+#' 
+#' @export
+
 odds_profit <- function(point, outcome, odds_wager) {
+  
+  if (!is.numeric(point) || length(point) != 1) {
+    stop("point must be numeric and length 1.")
+  }
+  
+  if (point < 2 || point > 12 || point == 7) {
+    stop("point must be between 2 and 12 but not 7.")
+  }
+  
+  if (!(outcome %in% c("natural", "craps", "push", "point", "seven_out", "point_made"))) {
+    stop("not a possible craps outcome.")
+  }
+  
+  if (!is.numeric(odds_wager) || odds_wager < 0) {
+    stop("odds wager must be numeric and non-negative.")
+  }
+  
+  if (odds_wager %% 2 != 0 && odds_wager %% 5 != 0) {
+    stop("odds wager must be a whole number and multiple of 2 or 5.")
+  }
   
   if (outcome == "point_made"  && point %in% c(4,10)) {
     profit <- 2*odds_wager
