@@ -136,6 +136,22 @@ resolve_point <- function(point) {
 
 pass_line_profit <- function(outcome, pass_line_wager) {
   
+  if (!(outcome %in% c("natural", "craps", "push", "point", "seven_out", "point_made"))) {
+    stop("not a possible craps outcome.")
+  }
+  
+  if (length(pass_line_wager) != 1) {
+    stop("length of pass line wager is ", length(pass_line_wager), " but must be length 1.")
+  }
+  
+  if (!is.numeric(pass_line_wager) || pass_line_wager < 0) {
+    stop("pass line wager must be numeric and non-negative.")
+  }
+  
+  if (pass_line_wager %% 1 != 0) {
+    stop("pass line wager must be a whole number.")
+  }
+  
   if (outcome %in% c("natural", "point_made")) {
     profit <- pass_line_wager
   } else if (outcome %in% c("craps", "push", "seven_out")) {
