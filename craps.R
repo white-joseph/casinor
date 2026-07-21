@@ -116,6 +116,24 @@ resolve_point <- function(point) {
   ))
 }
 
+#' Calculates the profit on the pass line bet
+#' 
+#' Evaluates the outcome of the come out roll or the point resolution and returns
+#' the profit based on the respective outcome, payout and wager.
+#' 
+#' @param outcome character string vector of length 1. It is the outcome of either
+#' the come out phase or point resolution phase of craps. 
+#' @param pass_line_wager whole positive numeric vector of length 1 for how much
+#' to bet on the pass line of a craps game.
+#' 
+#' @return numeric vector of length 1 which is the profit on the pass line bet.
+#' 
+#' @examples
+#' pass_line_profit("natural", 10)
+#' pass_line_profit("craps", 1250)
+#' 
+#' @export
+
 pass_line_profit <- function(outcome, pass_line_wager) {
   
   if (outcome %in% c("natural", "point_made")) {
