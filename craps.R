@@ -264,6 +264,12 @@ odds_profit <- function(point, outcome, odds_wager) {
   return(profit)
 }
 
+place_profit <- function(outcome, rolls, place_value, place_wager) {
+  # if outcome is point_made and place_value is equal to the sum of any value in rolls
+  # then evaluate another string of if statement for what the place value was
+  # then else profit is -place_wager
+}
+
 play_craps <- function(pass_line_wager = 10, dont_pass_wager = 0, odds_wager = 0) {
   come_out <- come_out_roll()
   
